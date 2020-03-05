@@ -23,14 +23,14 @@ public class Recipe {
     private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
     @OneToOne(
-            cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST/*,CascadeType.REFRESH*/},
+            cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "instruction_id")
     private RecipeInstructions instructions;
 
     @ManyToMany(
-            cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST/*,CascadeType.REFRESH*/},
+            cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
             fetch = FetchType.LAZY
     )
     @JoinTable(

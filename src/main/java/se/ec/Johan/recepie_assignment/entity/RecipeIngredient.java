@@ -17,7 +17,7 @@ public class RecipeIngredient {
     private String recipeIngredientId;
 
     @ManyToOne(
-            cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST/*,CascadeType.REFRESH*/},
+            cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "ingredient_id")
@@ -26,7 +26,7 @@ public class RecipeIngredient {
     private Measurement measurement;
 
     @ManyToOne(
-            cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST/*,CascadeType.REFRESH*/},
+            cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "recipe_id")

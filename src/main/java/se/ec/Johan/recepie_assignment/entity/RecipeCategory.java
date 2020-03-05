@@ -55,6 +55,9 @@ public class RecipeCategory {
         this.recipes = recipes;
     }
 
+    //Add recipes! Setter and getter is enough??
+    //Remove recipes! Setter and getter is enough??
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
