@@ -4,10 +4,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import se.ec.Johan.recepie_assignment.entity.*;
+
+import javax.persistence.criteria.CriteriaBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @DataJpaTest
@@ -16,21 +20,26 @@ public class RecipeRepositoryTest {
     @Autowired
     private RecipeRepository testObject;
 
-    private RecipeCategoryRepository recipeCategory;
-    private RecipeIngredientRepository recipeIngredient;
+    @Autowired
+    private TestEntityManager em;
+
+    //Ingredients
+    private Ingredient kott;
+    private Ingredient banana;
+    private Ingredient apple;
 
     //Instructions
-    private RecipeInstructions testInstructions = new RecipeInstructions("Gör detta med all din mat!");
+    private RecipeInstructions instructions;
 
     //Categories
-    private RecipeCategory testCategoryMexican = new RecipeCategory("Mexican");
-    private RecipeCategory testCategoryFresh = new RecipeCategory("Fresh");
-    private RecipeCategory testCategoryVegan = new RecipeCategory("Vegan");
+    private RecipeCategory mexican;
+    private RecipeCategory fresh;
+    private RecipeCategory vegan;
 
     //RecipeIngrediens
-    private RecipeIngredient banana = new RecipeIngredient(new Ingredient("Banana"),20,Measurement.KG);
-    private RecipeIngredient apple = new RecipeIngredient(new Ingredient("Apple"),10,Measurement.G);
-    private RecipeIngredient kott = new RecipeIngredient(new Ingredient("Oxfilé"),1,Measurement.KG);
+    //private RecipeIngredient banana = new RecipeIngredient(new Ingredient("Banana"),20,Measurement.KG);
+    //private RecipeIngredient apple = new RecipeIngredient(new Ingredient("Apple"),10,Measurement.G);
+    //private RecipeIngredient kott = new RecipeIngredient(new Ingredient("Oxfilé"),1,Measurement.KG);
 
     //Recipes
     private Recipe testRecipe1KöttSallad;
@@ -39,24 +48,33 @@ public class RecipeRepositoryTest {
 
     @BeforeEach
     void setUp(){
+        kott = em.persist(new Ingredient("Oxfilé"));
+        apple = em.persist(new Ingredient("apple"));
+        banana = em.persist(new Ingredient("Banana"));
+
+        mexican = em.persist(new RecipeCategory("Mexican"));
+        fresh = em.persist(new RecipeCategory("Fresh"));
+        vegan = em.persist(new RecipeCategory("Vegan"));
+
+        instructions = em.persist(new RecipeInstructions("Gör detta med all din mat!"));
 
         //Köttsallad - Mexican - Oxfilé - Banana - Gör detta med all din mat!
-        testRecipe1KöttSallad = new Recipe("Köttsallad",testInstructions);
-        testRecipe1KöttSallad.addCategory(testCategoryMexican);
-        testRecipe1KöttSallad.addIngredient(kott);
-        testRecipe1KöttSallad.addIngredient(banana);
+        testRecipe1KöttSallad = new Recipe("Köttsallad",instructions);
+        testRecipe1KöttSallad.addCategory(mexican);
+        testRecipe1KöttSallad.addIngredient(new RecipeIngredient(kott,1,Measurement.KG));
+        testRecipe1KöttSallad.addIngredient(new RecipeIngredient(banana,2,Measurement.G));
 
         //Fruktsallad - Fresh - Vegan - Apple - Banana - Gör detta med all din mat!
-        testRecipe2FruktSallad = new Recipe("Fruktsallad", testInstructions);
-        testRecipe2FruktSallad.addCategory(testCategoryFresh);
-        testRecipe2FruktSallad.addCategory(testCategoryVegan);
-        testRecipe2FruktSallad.addIngredient(banana);
-        testRecipe2FruktSallad.addIngredient(apple);
+        testRecipe2FruktSallad = new Recipe("Fruktsallad", instructions);
+        testRecipe2FruktSallad.addCategory(fresh);
+        testRecipe2FruktSallad.addCategory(vegan);
+        testRecipe2FruktSallad.addIngredient(new RecipeIngredient(banana,2,Measurement.HG));
+        testRecipe2FruktSallad.addIngredient(new RecipeIngredient(apple,10,Measurement.KG));
 
         //Oxfilé - Fresh - Oxfilé - Gör detta med all din mat!
-        testRecipe3Oxe = new Recipe("Oxfilé",testInstructions);
-        testRecipe3Oxe.addCategory(testCategoryFresh);
-        testRecipe3Oxe.addIngredient(kott);
+        testRecipe3Oxe = new Recipe("Oxfilé",instructions);
+        testRecipe3Oxe.addCategory(fresh);
+        testRecipe3Oxe.addIngredient(new RecipeIngredient(kott,2,Measurement.HG));
 
         testObject.save(testRecipe1KöttSallad);
         testObject.save(testRecipe2FruktSallad);
@@ -73,21 +91,34 @@ public class RecipeRepositoryTest {
 
     @Test
     public void given_ingredient_finds_recipes_containing_ingredientQuery(){
-        String ingredient = "Banana";
+        String ingredient = "Oxfilé";
         List<Recipe> result = testObject.findRecipeByIngredientName(ingredient);
 
-        assertEquals(1,result.size());
+        assertEquals(2,result.size());
     }
 
     @Test
     public void given_ingredient_finds_recipes_containing_ingredient(){
-        String ingredient = "Banana";
+        String ingredient = "Oxfilé";
         List<Recipe> result = testObject.findByRecipeIngredientsIngredientIngredientNameIgnoreCase(ingredient);
+
+        assertEquals(2,result.size());
+    }
+
+    @Test
+    public void given_category_finds_recepies_with_category(){
+        String category = "fresh";
+        List<Recipe> result = testObject.findByRecipeCategoriesCategoryNameIgnoreCase(category);
+
+        assertEquals(2,result.size());
+    }
+
+    @Test
+    public void given_list_of_categories_find_those_recipes(){
+        List<String> categories = Arrays.asList("fresh","vegan");
+        List<Recipe> result = testObject.findRecipeFromCategories(categories);
 
         assertEquals(1,result.size());
     }
-
-
-
 
 }
