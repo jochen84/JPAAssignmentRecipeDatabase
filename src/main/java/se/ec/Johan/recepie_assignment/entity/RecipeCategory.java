@@ -1,6 +1,7 @@
 package se.ec.Johan.recepie_assignment.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,16 +22,16 @@ public class RecipeCategory {
             joinColumns = @JoinColumn(name = "recipecategory_id"),
             inverseJoinColumns = @JoinColumn(name = "recipe_id")
     )
-    private List<Recipe> recipes; // = new ArrayList<>();
+    private List<Recipe> recipes = new ArrayList<>();
 
-    public RecipeCategory(int recipeCategoryId, String categoryName, List<Recipe> recipes) {
+    public RecipeCategory(int recipeCategoryId, String categoryName) {
         this.recipeCategoryId = recipeCategoryId;
         this.categoryName = categoryName;
-        this.recipes = recipes;
+
     }
 
     public RecipeCategory(String categoryName) {
-        this(0, categoryName, null);
+        this(0, categoryName);
     }
 
     RecipeCategory(){}
@@ -56,6 +57,12 @@ public class RecipeCategory {
     }
 
     //Add recipes! Setter and getter is enough??
+    public boolean addRecipe(Recipe recipe){
+        if (recipe == null) return false;
+        if (recipes.contains(recipe)) return false;
+        if (recipes.add(recipe)) return true;
+        return false;
+    }
     //Remove recipes! Setter and getter is enough??
 
     @Override

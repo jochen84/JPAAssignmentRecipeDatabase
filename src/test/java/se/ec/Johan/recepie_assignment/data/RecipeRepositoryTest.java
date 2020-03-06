@@ -36,11 +36,6 @@ public class RecipeRepositoryTest {
     private RecipeCategory fresh;
     private RecipeCategory vegan;
 
-    //RecipeIngrediens
-    //private RecipeIngredient banana = new RecipeIngredient(new Ingredient("Banana"),20,Measurement.KG);
-    //private RecipeIngredient apple = new RecipeIngredient(new Ingredient("Apple"),10,Measurement.G);
-    //private RecipeIngredient kott = new RecipeIngredient(new Ingredient("Oxfilé"),1,Measurement.KG);
-
     //Recipes
     private Recipe testRecipe1KöttSallad;
     private Recipe testRecipe2FruktSallad;
@@ -79,6 +74,7 @@ public class RecipeRepositoryTest {
         testObject.save(testRecipe1KöttSallad);
         testObject.save(testRecipe2FruktSallad);
         testObject.save(testRecipe3Oxe);
+
     }
 
     @Test
@@ -113,12 +109,21 @@ public class RecipeRepositoryTest {
         assertEquals(2,result.size());
     }
 
+    //Fixa ignorecase
     @Test
     public void given_list_of_categories_find_those_recipes(){
-        List<String> categories = Arrays.asList("fresh","vegan");
+        List<String> categories = Arrays.asList("Fresh","vegan");
         List<Recipe> result = testObject.findRecipeFromCategories(categories);
 
-        assertEquals(1,result.size());
+        assertEquals(2,result.size());
     }
 
+
+    @Test
+    public void given_list_of_categories_find_those_recipestest(){
+        List<String> categories = Arrays.asList("Fresh","mexican");
+        List<Recipe> result = testObject.findDistinctByRecipeCategoriesCategoryNameIgnoreCaseIn(categories);
+
+        assertEquals(3,result.size());
+    }
 }

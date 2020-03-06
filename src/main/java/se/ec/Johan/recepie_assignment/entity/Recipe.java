@@ -112,11 +112,20 @@ public class Recipe {
     }
 
     //Add Category to category list
-    public boolean addCategory(RecipeCategory category){
+    public boolean addCategory2(RecipeCategory category){
         if (category == null) return false;
         if (recipeCategories.contains(category)) return false;
 
         return recipeCategories.add(category);
+    }
+
+    public boolean addCategory(RecipeCategory category){
+        if (category == null) return false;
+        if (recipeCategories.contains(category)) return false;
+
+            category.addRecipe(this);
+            return true;
+
     }
 
     //Remove Category from category list
