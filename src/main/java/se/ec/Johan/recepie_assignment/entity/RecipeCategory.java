@@ -56,14 +56,21 @@ public class RecipeCategory {
         this.recipes = recipes;
     }
 
-    //Add recipes! Setter and getter is enough??
     public boolean addRecipe(Recipe recipe){
         if (recipe == null) return false;
         if (recipes.contains(recipe)) return false;
-        if (recipes.add(recipe)) return true;
-        return false;
+
+        recipes.add(recipe);
+        return true;
+
     }
-    //Remove recipes! Setter and getter is enough??
+
+    public boolean removeRecipe(Recipe recipe){
+        if (recipe == null) return false;
+        if (!recipes.contains(recipe)) return false;
+
+        return recipes.remove(recipe);
+    }
 
     @Override
     public boolean equals(Object o) {

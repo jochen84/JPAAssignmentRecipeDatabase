@@ -16,8 +16,9 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
 
     List<Recipe> findByRecipeIngredientsIngredientIngredientNameIgnoreCase(String ingredientName111);
 
-    List<Recipe> findByRecipeCategoriesCategoryNameIgnoreCase(String category);
+    List<Recipe> findDistinctByRecipeCategoriesCategoryNameIgnoreCase(String category);
 
+    //Fixa ignoreCase?
     @Query("SELECT DISTINCT a FROM Recipe a JOIN FETCH a.recipeCategories b WHERE b.categoryName IN :categoriesList")
     List<Recipe> findRecipeFromCategories(@Param("categoriesList") List<String> categoriesList);
 

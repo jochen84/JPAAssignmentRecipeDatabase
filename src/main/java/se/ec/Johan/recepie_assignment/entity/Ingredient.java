@@ -1,7 +1,5 @@
 package se.ec.Johan.recepie_assignment.entity;
 
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 import java.util.Objects;
 

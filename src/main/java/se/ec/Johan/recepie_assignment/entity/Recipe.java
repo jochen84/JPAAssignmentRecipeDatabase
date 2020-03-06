@@ -123,6 +123,7 @@ public class Recipe {
         if (category == null) return false;
         if (recipeCategories.contains(category)) return false;
 
+            recipeCategories.add(category);
             category.addRecipe(this);
             return true;
 

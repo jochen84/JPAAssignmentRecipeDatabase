@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import se.ec.Johan.recepie_assignment.entity.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -104,7 +103,7 @@ public class RecipeRepositoryTest {
     @Test
     public void given_category_finds_recepies_with_category(){
         String category = "fresh";
-        List<Recipe> result = testObject.findByRecipeCategoriesCategoryNameIgnoreCase(category);
+        List<Recipe> result = testObject.findDistinctByRecipeCategoriesCategoryNameIgnoreCase(category);
 
         assertEquals(2,result.size());
     }
@@ -112,7 +111,7 @@ public class RecipeRepositoryTest {
     //Fixa ignorecase
     @Test
     public void given_list_of_categories_find_those_recipes(){
-        List<String> categories = Arrays.asList("Fresh","vegan");
+        List<String> categories = Arrays.asList("Fresh","Vegan");
         List<Recipe> result = testObject.findRecipeFromCategories(categories);
 
         assertEquals(2,result.size());
