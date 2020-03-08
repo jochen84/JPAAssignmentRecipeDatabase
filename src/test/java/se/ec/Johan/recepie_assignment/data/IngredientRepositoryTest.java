@@ -28,6 +28,7 @@ public class IngredientRepositoryTest {
         testObject.save(testApple2);
     }
 
+    //Hitta en ingrediens med specifikt ingrediensnamn.
     @Test
     public void given_name_find_banana(){
         String name = "banana";
@@ -37,6 +38,7 @@ public class IngredientRepositoryTest {
         assertEquals(testBanana,result.get());
     }
 
+    //Hitta flera ingredienser vars ingrediensnamn innehåller en viss String.
     @Test
     public void given_name_contains_returns_2(){
         String name = "appl";

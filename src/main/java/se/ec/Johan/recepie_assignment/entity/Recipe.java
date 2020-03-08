@@ -3,6 +3,7 @@ package se.ec.Johan.recepie_assignment.entity;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Recipe {
@@ -107,34 +108,46 @@ public class Recipe {
 
         if (ingredient == null) return false;
         if (!recipeIngredients.contains(ingredient)) return false;
-
-        return recipeIngredients.remove(ingredient);
-    }
-
-    //Add Category to category list
-    public boolean addCategory2(RecipeCategory category){
-        if (category == null) return false;
-        if (recipeCategories.contains(category)) return false;
-
-        return recipeCategories.add(category);
+        if (recipeIngredients.remove(ingredient)){
+            ingredient.setRecipe(null);
+            return true;
+        }
+        return false;
     }
 
     public boolean addCategory(RecipeCategory category){
         if (category == null) return false;
         if (recipeCategories.contains(category)) return false;
-
-            recipeCategories.add(category);
-            category.addRecipe(this);
+        if (recipeCategories.add(category)) {
+            //category.getRecipes().add(this);
             return true;
-
+        }
+        return false;
     }
 
     //Remove Category from category list
     public boolean removeCategory(RecipeCategory category){
         if (category == null) return false;
         if (!recipeCategories.contains(category)) return false;
+        if (recipeCategories.remove(category)){
+            category.getRecipes().remove(this);
+            return true;
+        }
+        return false;
+    }
 
-        return recipeCategories.remove(category);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Recipe)) return false;
+        Recipe recipe = (Recipe) o;
+        return recipeId == recipe.recipeId &&
+                Objects.equals(recipeName, recipe.recipeName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(recipeId, recipeName);
     }
 
     @Override
@@ -142,9 +155,6 @@ public class Recipe {
         final StringBuilder sb = new StringBuilder("Recipe{");
         sb.append("recipeId=").append(recipeId);
         sb.append(", recipeName='").append(recipeName).append('\'');
-        sb.append(", recipeIngredients=").append(recipeIngredients);
-        sb.append(", instructions=").append(instructions);
-        sb.append(", recipeCategories=").append(recipeCategories);
         sb.append('}');
         return sb.toString();
     }

@@ -56,22 +56,6 @@ public class RecipeCategory {
         this.recipes = recipes;
     }
 
-    public boolean addRecipe(Recipe recipe){
-        if (recipe == null) return false;
-        if (recipes.contains(recipe)) return false;
-
-        recipes.add(recipe);
-        return true;
-
-    }
-
-    public boolean removeRecipe(Recipe recipe){
-        if (recipe == null) return false;
-        if (!recipes.contains(recipe)) return false;
-
-        return recipes.remove(recipe);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

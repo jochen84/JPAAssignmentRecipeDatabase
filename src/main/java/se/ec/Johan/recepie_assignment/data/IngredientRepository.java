@@ -8,7 +8,10 @@ import java.util.Optional;
 
 public interface IngredientRepository extends JpaRepository<Ingredient, Integer> {
 
+    //Hitta en ingrediens med specifikt ingrediensnamn.
     Optional<Ingredient> findByIngredientNameIgnoreCase(String ingredientName);
+
+    //Hitta flera ingredienser vars ingrediensnamn innehåller en viss String.
     List<Ingredient> findByIngredientNameContainsIgnoreCase(String ingredientName);
 
 }

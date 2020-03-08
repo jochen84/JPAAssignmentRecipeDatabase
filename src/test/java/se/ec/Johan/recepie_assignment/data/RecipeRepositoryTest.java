@@ -73,9 +73,9 @@ public class RecipeRepositoryTest {
         testObject.save(testRecipe1KöttSallad);
         testObject.save(testRecipe2FruktSallad);
         testObject.save(testRecipe3Oxe);
-
     }
 
+    //Hitta flera recept vars receptnamn innehåller en viss String
     @Test
     public void given_string_find_recipe_containing_that_string(){
         String name = "sallad";
@@ -84,6 +84,7 @@ public class RecipeRepositoryTest {
         assertEquals(2,result.size());
     }
 
+    //Hitta alla recept som innehåller ett visst ingrediensnamn
     @Test
     public void given_ingredient_finds_recipes_containing_ingredientQuery(){
         String ingredient = "Oxfilé";
@@ -92,6 +93,7 @@ public class RecipeRepositoryTest {
         assertEquals(2,result.size());
     }
 
+    //Hitta alla recept som innehåller ett visst ingrediensnamn
     @Test
     public void given_ingredient_finds_recipes_containing_ingredient(){
         String ingredient = "Oxfilé";
@@ -100,15 +102,16 @@ public class RecipeRepositoryTest {
         assertEquals(2,result.size());
     }
 
+    //Hitta alla recept som tillhör en viss receptkategori
     @Test
     public void given_category_finds_recepies_with_category(){
         String category = "fresh";
-        List<Recipe> result = testObject.findDistinctByRecipeCategoriesCategoryNameIgnoreCase(category);
+        List<Recipe> result = testObject.findByRecipeCategoriesCategoryNameIgnoreCase(category);
 
         assertEquals(2,result.size());
     }
 
-    //Fixa ignorecase
+    //Hitta alla recept som har en eller flera träffar från en samling kategorier. Ex:{”spicy”,”mexican”,”weekend”}
     @Test
     public void given_list_of_categories_find_those_recipes(){
         List<String> categories = Arrays.asList("Fresh","Vegan");
@@ -117,7 +120,7 @@ public class RecipeRepositoryTest {
         assertEquals(2,result.size());
     }
 
-
+    //Hitta alla recept som har en eller flera träffar från en samling kategorier. Ex:{”spicy”,”mexican”,”weekend”}
     @Test
     public void given_list_of_categories_find_those_recipestest(){
         List<String> categories = Arrays.asList("Fresh","mexican");
